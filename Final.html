@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Card</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Style for the full-page overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      z-index: 2000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Your existing page content -->
+  <img src="ZUiY.gif" alt="stars" class="star" />
+  <img src="478475.gif" alt="ballon" class="ballon" />
+  <div class="container">
+    <!-- No audio element here since we’ll use our JS audio -->
+    <div class="birthdayCard">
+      <div class="cardFront">
+        <div class="front-text">
+          <h3 class="happy">HAPPY</h3>
+          <h2 class="bday">BIRTHDAY</h2>
+          <h3 class="toyou">to you!</h3>
+        </div>
+        <div class="wrap-deco">
+          <div class="decorations"></div>
+          <div class="decorationsTwo"></div>
+        </div>
+        <div class="wrap-decoTwo">
+          <div class="decorations"></div>
+          <div class="decorationsThree"></div>
+        </div>
+        <div class="plate">
+          <div class="cake"></div>
+          <div class="flame"></div>
+        </div>
+      </div>
+      <div class="cardInside">
+        <div class="img">
+          <img src="6ob.gif" alt="confetti" class="confetti" />
+        </div>
+        <div class="inside-text">
+          <h3 class="happy">HAPPY</h3>
+          <h2 class="bday">BIRTHDAY</h2>
+          <h3 class="toyou">to you!</h3>
+        </div>
+        <div class="wishes">
+          <p>Dear Irfa,</p>
+          <p>
+            Happy Birthday, my love! 🎉❤️ You make every moment special, and I’m so
+            grateful to have you in my life. Wishing you all the happiness in the world
+            today and always! 💖🎂✨
+          </p>
+          <p class="name">~ From Someone'Special</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img src="4SHX.gif" alt="cat" class="cat" />
+
+  <!-- Overlay for user interaction -->
+  <div class="overlay" id="startOverlay">
+    Click anywhere to start the celebration!
+  </div>
+
+  <script>
+    // Your existing script for the cake celebration
+    const cake = document.querySelector('.cake-container');
+    const candle = document.querySelector('.candle');
+    const flame = document.querySelector('.flame');
+    let isClicked = false;
+
+    // Preload the music
+    const celebrationMusic = new Audio('celebration.mp3');
+
+    const ribbonColors = [
+      'linear-gradient(45deg, #FF9ECD, #FF71B6)',
+      'linear-gradient(45deg, #FFB7E0, #FF8AC7)',
+      'linear-gradient(45deg, #FFC4E6, #FFA3D4)',
+      'linear-gradient(45deg, #E0C3FC, #BDE0FE)',
+      'linear-gradient(45deg, #FFCAD4, #FFD1E3)',
+      'linear-gradient(45deg, #B5EAD7, #C7F9CC)',
+      'linear-gradient(45deg, #FF9AA2, #FFB7B2)',
+      'linear-gradient(45deg, #FFDAC1, #FFE5D9)'
+    ];
+
+    function createRibbon() {
+      const ribbon = document.createElement('div');
+      ribbon.className = 'ribbon';
+      ribbon.style.left = `${Math.random() * window.innerWidth}px`;
+      ribbon.style.background = ribbonColors[Math.floor(Math.random() * ribbonColors.length)];
+      document.body.appendChild(ribbon);
+
+      ribbon.addEventListener('animationend', () => {
+        ribbon.remove();
+      });
+    }
+
+    function startCelebration() {
+      if (isClicked) return;
+      isClicked = true;
+
+      // Play the celebration music
+      celebrationMusic.play();
+
+      // Fade out candle smoothly
+      gsap.to(candle, {
+        opacity: 0,
+        y: -20,
+        duration: 1,
+        ease: "power2.out",
+        onComplete: () => candle.remove()
+      });
+
+      // Start ribbon rain
+      const ribbonInterval = setInterval(() => {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => createRibbon(), i * 100);
+        }
+      }, 200);
+
+      // Show next page button after 2 seconds
+      setTimeout(() => {
+        const nextButton = document.querySelector('.next-page-button');
+        nextButton.classList.add('show');
+      }, 2000);
+
+      // Stop ribbon rain after 5 seconds
+      setTimeout(() => {
+        clearInterval(ribbonInterval);
+      }, 5000);
+    }
+
+    // For pages where the cake is clicked to start celebration
+    if(cake) {
+      cake.addEventListener('click', startCelebration);
+    }
+
+    // Overlay click to unmute music and remove overlay
+    document.getElementById('startOverlay').addEventListener('click', function() {
+      celebrationMusic.play(); // This will unmute/start the music
+      this.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
